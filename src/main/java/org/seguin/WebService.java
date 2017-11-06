@@ -20,7 +20,7 @@ public class WebService {
     static IngredientList allIngredients = new IngredientList();
     static ArrayList<Ingredients> ingredientList = new ArrayList<Ingredients>(allIngredients);
     public static final String Cookie="Drinks_R_Uscookie";
-
+    static ArrayList<Token> tokenList = new ArrayList<Token>();
     //region User Related
 
     @GET @Path("/Users/GetUser/{id}")
@@ -41,6 +41,8 @@ public class WebService {
     @GET @Path("/Users/Logout")
     public Response logoutUser(@CookieParam(Cookie) Cookie cookie){
         System.out.println("Get logoutuser id: ");
+        tokenList.remove(tokenList.indexOf(cookie.getValue()));
+
         NewCookie cookieasupprimer = new NewCookie(Cookie, null, "/", null, null, 0, true);
         return Response.ok(new Gson().toJson(true), MediaType.APPLICATION_JSON).cookie(cookieasupprimer).build();
     }
@@ -84,14 +86,23 @@ public class WebService {
 
     @POST @Path("/Users/VerifyCredentials")
     public Response verifyCredentials(EmailPassword login){
+        /*testing
+        Token token = new Token();
+        token.UserId = Integer.toString(0);
+        token.TokenId = UUID.randomUUID().toString();
+        tokenList.add(token);
+        NewCookie cookie = new NewCookie(Cookie, token.TokenId, "/", null, "id token", 64800, true);
+        return Response.ok(new Gson().toJson(token), MediaType.APPLICATION_JSON).cookie(cookie).build();
+        */
         System.out.println("POST verifyCredentials emailpassword: " + login.email + " " + login.password);
         for (Users user :
                 userList) {
             if (user.getUsername().equals(login.email)){
                 if (user.getPassword().equals(login.password)){
                     Token token = new Token();
-                    token.UserId = UUID.randomUUID().toString();
+                    token.UserId = Integer.toString(user.getId());
                     token.TokenId = UUID.randomUUID().toString();
+                    tokenList.add(token);
                     NewCookie cookie = new NewCookie(Cookie, token.TokenId, "/", null, "id token", 64800, true);
                     return Response.ok(new Gson().toJson(token), MediaType.APPLICATION_JSON).cookie(cookie).build();
                 }
@@ -103,10 +114,10 @@ public class WebService {
 
     @POST @Path("/Users/Create")
     public Users createUser(EmailPassword credentials){
-        System.out.println("POST createuser emailpassword: " + credentials.email + " " + credentials.password);
+        System.out.println("POST createUser emailpassword: " + credentials.email + " " + credentials.password);
 
         for (Users user:
-             userList) {
+                userList) {
             if (user.getUsername().equals(credentials.email)){
                 throw new UsernameExistsException();
                 //return null;
