@@ -1,0 +1,16 @@
+org\seguin\Exceptions\ExceptionHandler.class
+org\seguin\GSONMapper.class
+org\seguin\Exceptions\UserNotFoundException.class
+org\seguin\Model\Token.class
+org\seguin\WebService.class
+org\seguin\Model\Ingredients.class
+org\seguin\Model\IngredientList.class
+org\seguin\EmailPassword.class
+org\seguin\Exceptions\IngredientNotFoundException.class
+org\seguin\Exceptions\BadLoginExecption.class
+org\seguin\Model\Users.class
+org\seguin\Exceptions\DrinkNotFoundException.class
+org\seguin\Model\Drinks.class
+org\seguin\Exceptions\UsernameExistsException.class
+org\seguin\Model\IngredientList$1.class
+org\seguin\UserDrink.class
