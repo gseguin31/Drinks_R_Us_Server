@@ -1,0 +1,15 @@
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:15:39:03 -0500] "GET / HTTP/1.1" 200 57 http-bio-8443-exec-3 31
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:15:39:03 -0500] "GET /favicon.ico HTTP/1.1" 404 973 http-bio-8443-exec-4 3
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:15:44:46 -0500] "GET /api/create HTTP/1.1" 400 17 http-bio-8443-exec-9 655
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:15:45:01 -0500] "GET /api/Users/Logout HTTP/1.1" 400 20 http-bio-8443-exec-2 14
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:15:46:20 -0500] "GET /api/Users/VerifyCredentials HTTP/1.1" 400 19 http-bio-8443-exec-2 660
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:16:02:17 -0500] "POST /api/Users/VerifyCredentials HTTP/1.1" 200 63 http-bio-8443-exec-4 911226
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:16:03:23 -0500] "POST /api/Users/VerifyCredentials HTTP/1.1" 200 63 http-bio-8443-exec-7 3356
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:16:03:43 -0500] "POST /api/Users/VerifyCredentials HTTP/1.1" 200 63 http-bio-8443-exec-10 1983
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:16:18:20 -0500] "POST /api/Users/Create HTTP/1.1" 200 72 http-bio-8443-exec-3 9
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:16:41:22 -0500] "POST /api/Users/VerifyCredentials HTTP/1.1" 200 63 http-bio-8443-exec-2 474
+0:0:0:0:0:0:0:1 - - [13/Nov/2017:16:52:50 -0500] "POST /api/Users/Create HTTP/1.1" 200 72 http-bio-8443-exec-3 477
+127.0.0.1 - - [13/Nov/2017:16:53:41 -0500] "POST /api/Users/Create HTTP/1.1" 200 72 http-bio-8443-exec-6 4
+127.0.0.1 - - [13/Nov/2017:16:53:41 -0500] "GET /api/Drinks/GetAllDrinks HTTP/1.1" 200 2 http-bio-8443-exec-7 2
+127.0.0.1 - - [13/Nov/2017:16:53:41 -0500] "GET /api/Users/GetUser/1 HTTP/1.1" 200 72 http-bio-8443-exec-8 3
+127.0.0.1 - - [13/Nov/2017:16:56:48 -0500] "POST /api/Users/Create HTTP/1.1" 200 72 http-bio-8443-exec-1 31191

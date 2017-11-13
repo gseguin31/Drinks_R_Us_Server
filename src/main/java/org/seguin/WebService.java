@@ -7,6 +7,8 @@ import org.seguin.Model.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -24,7 +26,7 @@ public class WebService {
     //region User Related
 
     @GET @Path("/Users/GetUser/{id}")
-    public Users getUserById(@PathParam("id") int id){
+    public Users getUserById(@CookieParam(Cookie) Cookie cookie, @PathParam("id") int id){
         System.out.println("Get getuserbyid id: " + id);
 
         for (Users user :
@@ -48,45 +50,45 @@ public class WebService {
     }
 
     @GET @Path("/Users/MyDrinks/{id}")
-    public ArrayList<Drinks> getMyDrinks(@PathParam("id") int id){
+    public ArrayList<Drinks> getMyDrinks(@CookieParam(Cookie) Cookie cookie, @PathParam("id") int id){
         System.out.println("Get getmydrinks id: " + id);
 
-        Users user = getUserById(id);
+        Users user = getUserById(cookie, id);
         ArrayList<Drinks> drinks = user.getMyDrinks();
         return drinks;
     }
 
     @GET @Path("/Users/MyFavs/{id}")
-    public ArrayList<Drinks> getMyFavs(@PathParam("id") int id){
+    public ArrayList<Drinks> getMyFavs(@CookieParam(Cookie) Cookie cookie, @PathParam("id") int id){
         System.out.println("Get getmyfavs id: " + id);
 
-        Users user = getUserById(id);
+        Users user = getUserById(cookie, id);
         ArrayList<Drinks> favs = user.getMyFavs();
         return favs;
     }
 
     @POST
     @Path("/Users/AddDrink")
-    public String addMyDrinks(UserDrink drink){
+    public String addMyDrinks(@CookieParam(Cookie) Cookie cookie, UserDrink drink){
         System.out.println("POST addmydrinks drink: " + drink.drink.getName() + " userid: " + drink.user.getId());
 
-        Users user = getUserById(drink.user.getId());
+        Users user = getUserById(cookie, drink.user.getId());
         user.addMyDrink(drink.drink);
         return "ok";
     }
 
     @POST @Path("/Users/AddFav")
-    public String addMyFavs(UserDrink fav){
+    public String addMyFavs(@CookieParam(Cookie) Cookie cookie, UserDrink fav){
         System.out.println("POST addMyFavs drink: " + fav.drink + " userid: " + fav.user.getId());
 
-        Users user = getUserById(fav.user.getId());
+        Users user = getUserById(cookie, fav.user.getId());
         user.addMyFav(fav.drink);
         return "ok";
     }
 
     @POST @Path("/Users/VerifyCredentials")
     public Response verifyCredentials(EmailPassword login){
-        /*testing
+        /*//testing
         Token token = new Token();
         token.UserId = Integer.toString(0);
         token.TokenId = UUID.randomUUID().toString();
@@ -102,6 +104,14 @@ public class WebService {
                     Token token = new Token();
                     token.UserId = Integer.toString(user.getId());
                     token.TokenId = UUID.randomUUID().toString();
+
+                    //create expiration date for the token 15 days later from creation
+                    token.dateExpiration = new Date();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(token.dateExpiration);
+                    calendar.add(Calendar.DATE, 15);
+                    token.dateExpiration = calendar.getTime();
+
                     tokenList.add(token);
                     NewCookie cookie = new NewCookie(Cookie, token.TokenId, "/", null, "id token", 64800, true);
                     return Response.ok(new Gson().toJson(token), MediaType.APPLICATION_JSON).cookie(cookie).build();
@@ -125,6 +135,11 @@ public class WebService {
         }
         Users user = new Users(credentials.email, credentials.password);
         userList.add(user);
+        Token token = new Token();
+        token.UserId = Integer.toString(user.getId());
+        token.TokenId = UUID.randomUUID().toString();
+        tokenList.add(token);
+        NewCookie cookie = new NewCookie(Cookie, token.TokenId, "/", null, "id token", 64800, true);
         return user;
 
     }
@@ -134,7 +149,7 @@ public class WebService {
     //region Drink Related
 
     @POST @Path("/Drinks/Create")
-    public String createDrink(Drinks drink){
+    public String createDrink(@CookieParam(Cookie) Cookie cookie, Drinks drink){
         System.out.println("POST createdrink drink: " + drink.getName());
 
         drinkList.add(drink);
@@ -142,7 +157,7 @@ public class WebService {
     }
 
     @GET @Path("/Drinks/GetAllDrinks")
-    public ArrayList<Drinks> getAllDrinks(){
+    public ArrayList<Drinks> getAllDrinks(@CookieParam(Cookie) Cookie cookie){
         System.out.println("GET getalldrink ");
 
         return drinkList;
@@ -180,7 +195,7 @@ public class WebService {
     //region Ingredient Related
 
     @POST @Path("/Ingredients/Create")
-    public String createIngredient(Ingredients ingr){
+    public String createIngredient(@CookieParam(Cookie) Cookie cookie, Ingredients ingr){
         System.out.println("POST createingredient ingredient: " + ingr.Nom);
 
         ingredientList.add(ingr);
@@ -218,7 +233,7 @@ public class WebService {
     */
 
     @GET @Path("/Ingredients/GetAllIngredient")
-    public ArrayList<Ingredients> getAllIngredients(){
+    public ArrayList<Ingredients> getAllIngredients(@CookieParam(Cookie) Cookie cookie){
         System.out.println("GET getallingredients");
         return ingredientList;
     }
