@@ -22,7 +22,7 @@ public class WebService {
     static IngredientList allIngredients = new IngredientList();
     static ArrayList<Ingredients> ingredientList = new ArrayList<Ingredients>(allIngredients);
     public static final String Cookie="Drinks_R_Uscookie";
-     ArrayList<Token> tokenList = new ArrayList<Token>();
+    static ArrayList<Token> tokenList = new ArrayList<Token>();
     //region User Related
 
     @GET @Path("/Users/GetUser/{id}")
@@ -48,12 +48,15 @@ public class WebService {
     public Response logoutUser(@CookieParam(Cookie) Cookie cookie) throws InterruptedException {
         Thread.sleep(2000);
         System.out.println("Get logoutuser id: ");
+        Token tokenToDelete = new Token();
         for (Token tok :
                 tokenList) {
             if (tok.TokenId.equals(cookie.getValue())){
-                tokenList.remove(tok);
+                tokenToDelete = tok;
             }
         }
+        //Ne peux pas retirer un element d'une liste qui se fait parcourir alors retirer apres
+        tokenList.remove(tokenToDelete);
 
         NewCookie cookieasupprimer = new NewCookie(Cookie, null, "/", null, null, 0, true);
         return Response.ok(new Gson().toJson(true), MediaType.APPLICATION_JSON).cookie(cookieasupprimer).build();
@@ -172,6 +175,7 @@ public class WebService {
         calendar.setTime(token.dateExpiration);
         calendar.add(Calendar.DATE, 15);
         token.dateExpiration = calendar.getTime();
+        System.out.println("Created User ID: " + token.UserId);
 
         tokenList.add(token);
         NewCookie cookie = new NewCookie(Cookie, token.TokenId, "/", null, "id token", 64800, true);
@@ -291,11 +295,8 @@ public class WebService {
             if (cookie.getValue().equals(tok.TokenId)) {
                 if (tokenIsValid(tok))
                     return true;
-                else{
-                    tokenList.remove(tok);
+                else
                     return false;
-                }
-
             }
         }
         return false;
