@@ -27,7 +27,6 @@ public class WebService {
 
     @GET @Path("/Users/GetUser/{id}")
     public Users getUserById(@CookieParam(Cookie) Cookie cookie, @PathParam("id") int id) throws InterruptedException {
-        Thread.sleep(2000);
         if (!cookieIsValid(cookie))
             return null;
 
